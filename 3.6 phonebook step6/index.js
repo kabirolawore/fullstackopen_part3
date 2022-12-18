@@ -75,8 +75,8 @@ app.post("/api/persons", (request, response) => {
   const body = request.body;
 
   if (!body.name || !body.number) {
-    // return is crucial here otherwise the code will execute to the very end.
-
+    //
+    // Return is crucial here otherwise the code will execute to the very end.
     return response.status(400).json({
       error: "name or number is missing",
     });
