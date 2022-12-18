@@ -1,4 +1,3 @@
-const { response, request } = require("express");
 const express = require("express");
 
 const app = express();
@@ -71,10 +70,13 @@ app.delete("/api/persons/:id", (request, response) => {
 const generateId = () => Math.trunc(Math.random() * 1000) + 1;
 
 app.post("/api/persons", (request, response) => {
+  //
+  //
   const body = request.body;
 
   if (!body.name || !body.number) {
     // return is crucial here otherwise the code will execute to the very end.
+
     return response.status(400).json({
       error: "name or number is missing",
     });
