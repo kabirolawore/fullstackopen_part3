@@ -43,19 +43,23 @@ app.get("/api/persons", (_request, response) => {
 
 //
 app.get("/api/persons/:id", (request, response) => {
-  Person.findById(request.params.id).then((person) => {
-    response.json(person);
-  });
+  Person.findById(request.params.id)
+    .then((person) => {
+      if (person) response.json(person);
+      else response.status(404).end();
+    })
+    .catch((err) => {
+      console.log(err);
+      response.status(400).send({ error: "malformatted id" });
+    });
 });
 
 //
-app.delete("/api/persons/:id", (request, response) => {
-  const id = Number(request.params.id);
-  // console.log(id);
-
-  Person = Person.filter((person) => person.id !== id);
-
-  response.status(204).end();
+app.delete("/api/persons/:id", (request, response, next) => {
+  //
+  Person.findByIdAndRemove(request.params.id)
+    .then((result) => response.status(204).end())
+    .catch((error) => next(error));
 });
 
 //
@@ -68,17 +72,10 @@ app.post("/api/persons", (request, response) => {
   if (!body.name || !body.number) {
     //
     // Return is crucial here otherwise the code will execute to the very end.
-    return response.status(400).json({
+    return response.status(400).send({
       error: "name or number is missing",
     });
   }
-
-  // Person.find({ name: body.name })
-  //   .then((person) => person.name === body.name)
-  //   .then(() => {
-  //       return response.status(400).json({
-  //         error: "name must be unique",
-  //   });
 
   // else if (Person.some((person) => person.name === body.name)) {
   //   return response.status(400).json({
