@@ -16,7 +16,7 @@ const phonebookSchema = new mongoose.Schema({
   number: String,
 });
 
-const Person = mongoose.model("People", phonebookSchema);
+const Person = mongoose.model("Person", phonebookSchema);
 
 if (process.argv.length === 5) {
   mongoose
