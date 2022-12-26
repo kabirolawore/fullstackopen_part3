@@ -101,7 +101,7 @@ app.put("/api/persons/:id", (request, response, next) => {
 
 const errorHandler = (error, request, response, next) => {
   //
-  if (error.message === "CastError")
+  if (error.name === "CastError")
     return response.status(400).send({ error: "malformatted or deleted id" });
 
   next(error);
